@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import {
     BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer,
     Cell, PieChart, Pie
@@ -464,4 +464,10 @@ const DashboardPage = () => {
     );
 };
 
-export default DashboardPage;
+export default function PageWrapper() {
+    return (
+        <Suspense fallback={<p>Loading...</p>}>
+            <DashboardPage />
+        </Suspense>
+    );
+}
