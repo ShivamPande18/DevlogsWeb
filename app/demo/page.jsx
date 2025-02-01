@@ -12,7 +12,6 @@ import {
 
 import { doc, getDoc } from 'firebase/firestore';
 import { db } from '../firebase';
-import { useSearchParams, useRouter } from "next/navigation";
 
 
 
@@ -38,6 +37,8 @@ const fetchUserDataByEmail = async (email) => {
         throw error;
     }
 };
+
+
 
 
 
@@ -92,19 +93,6 @@ const msToHrs = (millis) => {
 
 const DashboardPage = () => {
 
-    const router = useRouter();
-    const searchParams = useSearchParams();
-    const uid = searchParams.get("uid"); // Extract 'uid' correctly
-
-    useEffect(() => {
-        if (!uid) {
-            console.warn("No UID found, redirecting to /register...");
-            router.push("/register"); // Redirect if UID is missing
-        } else {
-            console.log("Page ID:", uid);
-        }
-    }, [uid, router]);
-
     const curDate = new Date().toLocaleDateString("en-US");
     const [user, setUser] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
@@ -135,7 +123,8 @@ const DashboardPage = () => {
 
     useEffect(() => {
         if (!user) {
-            handleFetchUserData(uid);
+            const email = 'lr99MesLwfZvEthUgWFTjBIVBf52';
+            handleFetchUserData(email);
         }
         else {
             console.log(user)

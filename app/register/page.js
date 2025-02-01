@@ -1,9 +1,10 @@
 'use client';
-
+import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import { googleProvider, githubProvider, signInWithProvider } from '../firebase';
 import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { db } from '../firebase';
+import { useRouter } from "next/navigation";
 
 export default function SignUp() {
 
@@ -35,6 +36,7 @@ export default function SignUp() {
         return () => clearInterval(interval);
     }, []);
 
+
     const handleSignIn = async (provider) => {
         try {
             const result = await signInWithProvider(provider);
@@ -47,13 +49,14 @@ export default function SignUp() {
                 langs: [],
                 lastSeen: new Date().toLocaleDateString('en-US'),
                 logs: [],
+                projects: [],
                 maxTime: 0,
                 productivity: 0,
                 streak: 1,
             };
 
             // Check if the email already exists in Firestore
-            const userDocRef = doc(db, 'users', result.email); // Use email as the document ID
+            const userDocRef = doc(db, 'users', result.uid); // Use email as the document ID
             const userDocSnap = await getDoc(userDocRef);
 
             if (!userDocSnap.exists()) {
@@ -66,6 +69,7 @@ export default function SignUp() {
 
             // Update local state
             setUser(userData);
+            console.log(userData)
             setSuccess(true); // Indicate successful login
         } catch (error) {
             if (error.code === 'auth/account-exists-with-different-credential') {
@@ -77,22 +81,61 @@ export default function SignUp() {
         }
     };
 
+    useEffect(() => {
+        if (user) {
+            // Perform any actions needed when the user state is updated
+            console.log('User state updated:', user.username);
+        }
+    }, [user]);
+
+    const router = useRouter();
+
 
 
     return (
         <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-gray-900 via-purple-900 to-black text-white">
             {
                 success ?
-                    <div className="w-full max-w-lg p-8 bg-gray-800 rounded-lg shadow-lg">
-                        <div className="text-center">
-                            <h1 className="text-3xl font-bold mb-4">Welcome!</h1>
-                            <p className="text-lg mb-6">Time left until launch:</p>
-                            <div className="text-4xl font-bold bg-gray-700 text-white py-4 px-6 rounded-lg shadow-lg inline-block">
-                                {timeLeft}
+                    <div className='flex flex-col gap-y-10'>
+                        <div className="w-full max-w-lg p-8 bg-gray-800 rounded-lg shadow-lg">
+                            <div className="text-center">
+
+                                <p className="text-lg mb-6">Time left until launch:</p>
+                                <div className="text-4xl font-bold bg-gray-700 text-white py-4 px-6 rounded-lg shadow-lg inline-block">
+                                    {timeLeft}
+                                </div>
+                                <p className="text-sm text-gray-400 mt-4">
+                                    The launch is scheduled for February 1, 2025, at 10:00 AM.
+                                </p>
                             </div>
-                            <p className="text-sm text-gray-400 mt-4">
-                                The launch is scheduled for February 1, 2025, at 10:00 AM.
-                            </p>
+                        </div>
+                        <div className="w-full max-w-lg p-8 bg-gray-800 rounded-lg shadow-lg">
+                            <div className="text-center">
+                                <h1 className="text-3xl font-bold mb-4">Welcome {user ? user.username : ""}!</h1>
+                                <div className='flex flex-row justify-center items-center mt-10'>
+                                    <h2 className="py-3 px-5 bg-white text-black rounded-l-md">{user.userId}</h2>
+                                    <button className='bg-purple-500 rounded-r-md py-3 hover:bg-purple-700'
+                                        onClick={() => {
+                                            navigator.clipboard.writeText(user.userId);
+                                            alert('Token copied to clipboard!');
+                                        }}
+                                        style={{ flex: 1 }}
+                                    >
+                                        Copy Token
+                                    </button>
+
+
+                                </div>
+
+                                <button
+                                    onClick={() => router.push(`/dashboard?uid=${user.userId}`)}
+                                    className='bg-purple-500 rounded-md py-3 w-full hover:bg-purple-700 mt-5'
+                                >
+                                    Go to Dashboard
+                                </button>
+
+
+                            </div>
                         </div>
                     </div> :
                     <div className="w-full max-w-md p-8 bg-gray-800 rounded-lg shadow-lg">
@@ -117,6 +160,6 @@ export default function SignUp() {
                     </div>
             }
 
-        </div>
+        </div >
     );
 }
