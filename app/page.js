@@ -1,7 +1,7 @@
 "use client"
 
 import React from 'react';
-import { Terminal, Code2, Activity, Users, ChevronRight, Github } from 'lucide-react';
+import { Terminal, Code2, Activity, Users, ChevronRight, Blocks } from 'lucide-react';
 import Link from 'next/link';
 
 const FloatingOrb = ({ className = "" }) => (
@@ -35,6 +35,7 @@ const LandingPage = () => {
 
         <div className="mt-24 text-center">
           <h1 className="text-5xl font-bold mb-6">
+            DevLogs:
             Strava For
             <span className="bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-indigo-400"> {'<Coders/>'} </span>
           </h1>
@@ -45,9 +46,25 @@ const LandingPage = () => {
             <Link href="/dashboard" className="bg-gradient-to-r from-purple-600 to-indigo-600 text-white px-6 py-3 rounded-md hover:from-purple-500 hover:to-indigo-500 transition-colors flex items-center">
               Get Started <ChevronRight className="ml-2" />
             </Link>
-            <Link href="https://github.com/ShivamPande18/DevsLOG-Strava-For-Coding" target='_blank' className="border border-purple-500 px-6 py-3 rounded-md hover:bg-purple-500/10 transition-colors flex items-center">
-              <Github className="mr-2" /> View on GitHub
+            <Link href="https://marketplace.visualstudio.com/items?itemName=ShivamPande18.devlogs" target='_blank' className="border border-purple-500 px-6 py-3 rounded-md hover:bg-purple-900 transition-colors flex items-center">
+              <Blocks className="mr-2" /> Download the extention
+
             </Link>
+
+            <a
+              href="https://www.producthunt.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-white border-[#EA653F] border-2 transition-colors duration-200 rounded-lg shadow-lg hover:shadow-xl"
+            >
+              <img src="/product-hunt.png" alt="Product Hunt Logo" className="w-6 h-6" />
+              <div className='flex-col items-start justify-start ml-1'>
+
+                <p className='text-[#EA653F] text-left font-bold'>Published on </p>
+                <p className='text-black font-bold text-xl text-left'>Product Hunt </p>
+
+              </div>
+            </a>
           </div>
         </div>
       </header>
