@@ -41,17 +41,6 @@ const fetchUserDataByEmail = async (email) => {
 
 
 
-
-
-
-const leaderboardData = [
-    { rank: 1, name: 'Sarah Chen', hours: 245, streak: 65 },
-    { rank: 2, name: 'Mike Ross', hours: 232, streak: 48 },
-    { rank: 3, name: 'David Kim', hours: 228, streak: 52 },
-    // ... more users
-];
-
-
 const CustomTooltip = ({ active, payload }) => {
     if (active && payload && payload.length) {
         const { name, value } = payload[0].payload;
